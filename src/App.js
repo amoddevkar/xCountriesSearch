@@ -13,12 +13,12 @@ function App() {
 
     const fetchData = async () => {
       try {
-        const response = await fetch("https://xcountries-backend.azurewebsites.net/all");
+        const response = await fetch("https://restcountries.com/v3.1/all");
         if (!response.ok) {
           throw new Error("error");
-
         }
         const jsonData = await response.json();
+        console.log(jsonData[0].name)
         setCountries(jsonData);
         setFilteredCountries(jsonData);
       } catch (error) {
@@ -34,7 +34,7 @@ function App() {
     if (query == "") setFilteredCountries(countries)
     else {
       const filteredData = countries.filter(country => {
-        return country.name.toLowerCase().includes(query.toLowerCase());
+        return country.name.common.toLowerCase().includes(query.toLowerCase());
       });
       setFilteredCountries(filteredData)
     }
@@ -46,7 +46,7 @@ function App() {
     <div className='App'>
       <input type='text' onChange={handleInputChange}></input>
       <div className="App-main">
-        {filteredCountries.map((ele, idx) => <CountryBox name={ele.name} img={ele.flag} key={idx} />)}
+        {filteredCountries.map((ele, idx) => { console.log(ele.flags.png); return <CountryBox name={ele.name.common} img={ele.flags.png} key={idx} /> })}
       </div></div>
   );
 }
